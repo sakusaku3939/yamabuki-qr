@@ -1,15 +1,47 @@
 <template>
-  <div>
-    <n-link to="/">戻る</n-link>
-    <qrcode-stream :track="paintBoundingBox" @decode="onDecode" />
-    {{ errorMassge }}
-  </div>
+ <v-app id="inspire">
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list>
+        <v-list-item link href="../">
+          <v-list-item-action>
+            <v-icon>mdi-home</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+        <v-list-item disabled>
+          <v-list-item-action>
+            <v-icon>mdi-camera</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Reader</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>Reader</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <div class="image">
+        <qrcode-stream :track="paintBoundingBox" @decode="onDecode" />
+      </div>
+    </v-main>
+    <v-footer app>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
 import Vue from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
-import { ref, get, set, remove, child } from 'firebase/database'
+import { ref, get, set, child } from 'firebase/database'
 
 export default Vue.extend({
   name: 'QrReader',
@@ -18,25 +50,22 @@ export default Vue.extend({
   },
   data() {
     return {
+      drawer: false,
       errorMassge: '',
     }
   },
 
   methods: {
     async onDecode(result) {
-      console.log(this.redirect)
       try {
         const dbRef = ref(this.$fire.database)
-        const codesRef = child(dbRef, '/codes/' + result)
-        if ((await get(codesRef)).exists()) {
-          await remove(codesRef.ref)
-          const user = child(dbRef, '/user/' + this.$fire.auth.currentUser.uid)
-          await set(user, (await get(user)).val() + 1)
+        const announcerRef = child(dbRef, '/announcer/' + result)
+        if ((await get(announcerRef)).exists()) {
+          const userRef = child(dbRef, 'users/' + this.$fire.auth.currentUser.uid + "/" + result)
+          await set(userRef, true)
           this.$router.push('/')
         }
-      } catch {
-        this.errorMassge = 'error'
-      }
+      } catch { }
     },
     paintBoundingBox(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
@@ -52,3 +81,9 @@ export default Vue.extend({
   },
 })
 </script>
+
+<style>
+#image {
+  width: 100%;
+}
+</style>
