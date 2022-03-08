@@ -30,7 +30,8 @@
 
     <v-main>
       <div class="image">
-        <qrcode-stream :track="paintBoundingBox" @decode="onDecode" />
+        {{errorMassge}}
+        <qrcode-stream :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
       </div>
     </v-main>
     <v-footer app>
@@ -39,33 +40,37 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
-import { ref, get, set, child } from 'firebase/database'
+import { ref, set, child } from 'firebase/database'
 
-export default Vue.extend({
+export default {
   name: 'QrReader',
   components: {
     QrcodeStream,
   },
   data() {
+    const dbRef = ref(this.$fire.database)
+    const userRef = child(dbRef, 'users/' + this.$fire.auth.currentUser.uid)
     return {
+      userRef,
       drawer: false,
       errorMassge: '',
     }
   },
 
   methods: {
+    async onInit (promise) {
+    try {
+      await promise
+    } catch (error) {
+      this.errorMassge = error.name
+    }
+  },
     async onDecode(result) {
       try {
-        const dbRef = ref(this.$fire.database)
-        const announcerRef = child(dbRef, '/announcer/' + result)
-        if ((await get(announcerRef)).exists()) {
-          const userRef = child(dbRef, 'users/' + this.$fire.auth.currentUser.uid + "/" + result)
-          await set(userRef, true)
-          this.$router.push('/')
-        }
-      } catch { }
+        await set(child(this.userRef, result), true)
+        this.$router.push('/')
+        } catch { }
     },
     paintBoundingBox(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
@@ -79,7 +84,8 @@ export default Vue.extend({
       }
     },
   },
-})
+}
+
 </script>
 
 <style>

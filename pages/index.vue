@@ -37,33 +37,27 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { ref, get, child, query, equalTo, orderByValue } from 'firebase/database'
 
 
-export default Vue.extend({
+export default {
   name: 'HomePage',
   components: {},
-  data(){
-    return {
-      drawer: false,
-    }
-  },
   async asyncData({$fire}) {
     const dbRef = ref($fire.database)
     const userRef = child(dbRef, 'users/' + $fire.auth.currentUser.uid)
     const user = await get(query(userRef, orderByValue(), equalTo(true)))
-    const num = Object.keys(user.val() ?? {}).length
-    const count = num<9 ? num : 9
-    const imagePath = "/" + count + ".png"
+    const imagePath = "/" + (user.size<9 ? user.size : 9) + ".png"
     return {
+      drawer: false,
       imagePath
     }
   },
 
   methods: {
   },
-})
+}
+
 </script>
 
 <style>
