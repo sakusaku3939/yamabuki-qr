@@ -29,8 +29,8 @@
     </v-app-bar>
 
     <v-main>
-      <div class="image">
-        {{errorMassge}}
+      <div id="image">
+        {{ errorMassage }}
         <qrcode-stream :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
       </div>
     </v-main>
@@ -54,7 +54,7 @@ export default {
     return {
       userRef,
       drawer: false,
-      errorMassge: '',
+      errorMassage: '',
     }
   },
 
@@ -63,13 +63,13 @@ export default {
     try {
       await promise
     } catch (error) {
-      this.errorMassge = error.name
+      this.errorMassage = error.name
     }
   },
     async onDecode(result) {
       try {
         await set(child(this.userRef, result), true)
-        this.$router.push('/')
+        await this.$router.push('/')
         } catch { }
     },
     paintBoundingBox(detectedCodes, ctx) {

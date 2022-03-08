@@ -29,7 +29,7 @@
     </v-app-bar>
 
     <v-main>
-      <img id="image" :src="imagePath">
+      <img id="image" :src="imagePath" alt=''>
     </v-main>
     <v-footer app>
     </v-footer>
