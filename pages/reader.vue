@@ -1,8 +1,8 @@
 <template>
- <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
+  <v-app id='inspire'>
+    <v-navigation-drawer v-model='drawer' app>
       <v-list>
-        <v-list-item link href="../">
+        <v-list-item link href='../'>
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -24,14 +24,14 @@
     </v-navigation-drawer>
 
     <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click.stop='drawer = !drawer'></v-app-bar-nav-icon>
       <v-toolbar-title>Reader</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
-      <div id="image">
+      <div id='image'>
         {{ errorMassage }}
-        <qrcode-stream :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
+        <qrcode-stream :track='paintBoundingBox' @init='onInit' @decode='onDecode' />
       </div>
     </v-main>
     <v-footer app>
@@ -46,7 +46,7 @@ import { ref, set, child } from 'firebase/database'
 export default {
   name: 'QrReader',
   components: {
-    QrcodeStream,
+    QrcodeStream
   },
   data() {
     const dbRef = ref(this.$fire.database)
@@ -54,36 +54,37 @@ export default {
     return {
       userRef,
       drawer: false,
-      errorMassage: '',
+      errorMassage: ''
     }
   },
 
   methods: {
-    async onInit (promise) {
-    try {
-      await promise
-    } catch (error) {
-      this.errorMassage = error.name
-    }
-  },
+    async onInit(promise) {
+      try {
+        await promise
+      } catch (error) {
+        this.errorMassage = error.name
+      }
+    },
     async onDecode(result) {
       try {
         await set(child(this.userRef, result), true)
         await this.$router.push('/')
-        } catch { }
+      } catch {
+      }
     },
     paintBoundingBox(detectedCodes, ctx) {
       for (const detectedCode of detectedCodes) {
         const {
-          boundingBox: { x, y, width, height },
+          boundingBox: { x, y, width, height }
         } = detectedCode
 
         ctx.lineWidth = 2
         ctx.strokeStyle = '#007bff'
         ctx.strokeRect(x, y, width, height)
       }
-    },
-  },
+    }
+  }
 }
 
 </script>
