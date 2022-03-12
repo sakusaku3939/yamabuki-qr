@@ -1,40 +1,18 @@
 <template>
- <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
-      <v-list>
-        <v-list-item link href="../">
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item disabled>
-          <v-list-item-action>
-            <v-icon>mdi-camera</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Reader</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-      </v-list>
-    </v-navigation-drawer>
-
+  <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Reader</v-toolbar-title>
+      <v-btn icon to="/">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+      <v-toolbar-title>QRコードを読み取る</v-toolbar-title>
     </v-app-bar>
 
     <v-main>
-      <div class="image">
         {{errorMassge}}
-        <qrcode-stream :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
-      </div>
+        <qrcode-stream width="100%" :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
     </v-main>
     <v-footer app>
+      <span>製作者: 清水一聡</span>
     </v-footer>
   </v-app>
 </template>
@@ -87,9 +65,3 @@ export default {
 }
 
 </script>
-
-<style>
-#image {
-  width: 100%;
-}
-</style>
