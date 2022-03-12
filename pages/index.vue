@@ -18,7 +18,7 @@
             </v-container>
             <v-spacer/>
             <v-container>
-              <v-btn rounded large download="yamabukichan.png" :href="imagePath">
+              <v-btn rounded large download="やまぶきちゃん.png" :href="imagePath">
                 <v-icon left>mdi-download</v-icon>
                 画像を保存する
               </v-btn>
@@ -30,9 +30,6 @@
         </v-container>
       </v-col>
     </v-main>
-    <v-footer app>
-      <span>製作者: 清水一聡</span>
-    </v-footer>
   </v-app>
 </template>
 

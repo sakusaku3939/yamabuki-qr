@@ -11,9 +11,6 @@
       {{errorMassge}}
       <qrcode-stream width="100%" :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
     </v-main>
-    <v-footer app>
-      <span>製作者: 清水一聡</span>
-    </v-footer>
   </v-app>
 </template>
 
