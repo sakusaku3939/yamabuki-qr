@@ -1,33 +1,5 @@
 <template>
   <v-app id='inspire'>
-    <v-navigation-drawer v-model='drawer' app>
-      <v-list>
-        <v-list-item disabled>
-          <v-list-item-action>
-            <v-icon>mdi-home</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Home</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item link href='reader'>
-          <v-list-item-action>
-            <v-icon>mdi-camera</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Reader</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-      </v-list>
-    </v-navigation-drawer>
-
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click.stop='drawer = !drawer'></v-app-bar-nav-icon>
-      <v-toolbar-title>Home</v-toolbar-title>
-    </v-app-bar>
-
     <v-main class='center'>
       <h1>情報科発表会2021<br class='br-mobile'>スタンプラリー</h1>
       <img id='image' :src='imagePath' alt=''>
