@@ -19,7 +19,7 @@ export default {
   head: {
     title: 'yamabuki-qr2',
     htmlAttrs: {
-      lang: 'en',
+      lang: 'ja',
     },
     meta: [
       { charset: 'utf-8' },

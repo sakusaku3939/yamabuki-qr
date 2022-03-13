@@ -8,7 +8,7 @@
     </v-app-bar>
 
     <v-main>
-      {{errorMassge}}
+      {{ errorMassage }}
       <qrcode-stream width="100%" :track="paintBoundingBox" @init="onInit" @decode="onDecode" />
     </v-main>
   </v-app>
@@ -29,7 +29,7 @@ export default {
     return {
       userRef,
       drawer: false,
-      errorMassge: '',
+      errorMassage: '',
     }
   },
 
@@ -38,7 +38,7 @@ export default {
     try {
       await promise
     } catch (error) {
-      this.errorMassge = error.name
+      this.errorMassage = error.name
     }
   },
     async onDecode(result) {
